@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_tags/src/tags.dart';
 
+/// Used by [ItemTags.onPress].
+typedef onPressCallback = void Function(TapDownDetails d);
+
 /// Used by [ItemTags.onPressed].
 typedef OnPressedCallback = void Function(Item i);
 
@@ -48,6 +51,7 @@ class ItemTags extends StatefulWidget {
       this.highlightColor,
       this.splashColor,
       this.colorShowDuplicate = Colors.red,
+      this.onPress,
       this.onPressed,
       this.onLongPressed,
       Key? key})
@@ -127,6 +131,9 @@ class ItemTags extends StatefulWidget {
 
   /// Color show duplicate [ItemTags]
   final Color colorShowDuplicate;
+
+  /// callback
+  final onPressCallback? onPress;
 
   /// callback
   final OnPressedCallback? onPressed;
@@ -242,6 +249,9 @@ class _ItemTagsState extends State<ItemTags> {
                     BorderRadius.circular(_initBorderRadius)),
             padding: widget.padding * (fontSize / 14),
             child: _combine),
+        onTapDown: widget.onPress != null
+            ? (details) => widget.onPress!(details)
+            : null,
         onTap: widget.pressEnabled
             ? () {
                 if (widget.singleItem) {
